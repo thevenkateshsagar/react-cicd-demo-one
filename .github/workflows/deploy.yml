@@ -23,15 +23,16 @@ jobs:
           npm install
           npm run build
 
-      # Upload build files to EC2 user's home directory
+      # Upload the CONTENTS of dist/ to EC2
       - name: Upload Build Files to EC2
         uses: appleboy/scp-action@v0.1.4
         with:
           host: ${{ secrets.EC2_HOST }}
           username: ${{ secrets.EC2_USER }}
           key: ${{ secrets.EC2_SSH_KEY }}
+          # 👇 send contents, not folder
           source: "dist/*"
-          target: "/home/ubuntu/reactapp"
+          target: "/home/ubuntu/reactapp/dist-contents"
           overwrite: true
 
       # SSH into EC2 and deploy to Nginx web root
@@ -46,7 +47,8 @@ jobs:
             sudo rm -rf /var/www/html/*
 
             echo "📦 Copying new build..."
-            sudo cp -r /home/ubuntu/reactapp/* /var/www/html/
+            # copy the *contents* of dist-contents/ into html/
+            sudo cp -r /home/ubuntu/reactapp/dist-contents/* /var/www/html/
 
             echo "🔐 Setting permissions..."
             sudo chown -R www-data:www-data /var/www/html
