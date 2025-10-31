@@ -23,7 +23,7 @@ jobs:
           npm install
           npm run build
 
-      # Upload build files to EC2 user's home folder
+      # Upload build files to EC2 user's home directory
       - name: Upload Build Files to EC2
         uses: appleboy/scp-action@v0.1.4
         with:
@@ -34,7 +34,7 @@ jobs:
           target: "/home/ubuntu/reactapp"
           overwrite: true
 
-      # SSH into EC2 and deploy to Nginx
+      # SSH into EC2 and deploy to Nginx web root
       - name: Deploy to Nginx Web Root
         uses: appleboy/ssh-action@v1.0.3
         with:
