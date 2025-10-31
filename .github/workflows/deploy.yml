@@ -31,6 +31,7 @@ jobs:
                   key: ${{ secrets.EC2_SSH_KEY }}
                   source: "dist/*"
                   target: "/var/www/html/"
+                  rm: true # ✅ removes target dir contents before copying
 
             - name: Configure Nginx and Restart
               uses: appleboy/ssh-action@v1.0.3
